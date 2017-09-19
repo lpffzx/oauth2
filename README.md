@@ -1,2 +1,5 @@
-# oauth2
-apache oltu oauth2
+# Amigo
+
+do you have freestyle?
+
+local: yes
