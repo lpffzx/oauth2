@@ -27,7 +27,7 @@ public class Oauth2UserServiceImpl implements Oauth2UserService {
         dol.setUsername(user.getUsername());
         dol.setPassword(user.getPassword());
         dol.setSalt(user.getSalt());
-        dol = userDAO.makePersistent(dol);
+        dol = userDAO.save(dol);
         return dol != null ? dol.toDTO() : null;
     }
 
@@ -48,13 +48,13 @@ public class Oauth2UserServiceImpl implements Oauth2UserService {
 
     @Override
     public Oauth2UserDTO findOne(Integer userId) {
-        Oauth2UserDO userDO = userDAO.getById(userId);
+        Oauth2UserDO userDO = userDAO.findOne(userId);
         return userDO != null ? userDO.toDTO() : null;
     }
 
     @Override
     public List<Oauth2UserDTO> findAll() {
-        return Oauth2UserDO.toDTOList(userDAO.list());
+        return Oauth2UserDO.toDTOList(userDAO.findAll());
     }
 
     @Override

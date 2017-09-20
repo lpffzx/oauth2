@@ -20,7 +20,7 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public List<TestDTO> get() throws CommonException {
-        List<TestDO> testP = testDAO.list();
+        List<TestDO> testP = testDAO.findAll();
         List<TestDTO> result = new ArrayList<>();
         for (TestDO test : testP) {
             TestDTO temp = new TestDTO();

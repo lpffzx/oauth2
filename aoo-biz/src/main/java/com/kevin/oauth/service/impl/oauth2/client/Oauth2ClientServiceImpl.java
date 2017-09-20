@@ -38,13 +38,13 @@ public class Oauth2ClientServiceImpl implements Oauth2ClientService {
 
     @Override
     public Oauth2ClientDTO findOne(Integer clientId) {
-        Oauth2ClientDO clientDO = clientDAO.getById(clientId);
+        Oauth2ClientDO clientDO = clientDAO.findOne(clientId);
         return clientDO != null ? clientDO.toDTO() : null;
     }
 
     @Override
     public List<Oauth2ClientDTO> findAll() {
-        return Oauth2ClientDO.toDTOList(clientDAO.list());
+        return Oauth2ClientDO.toDTOList(clientDAO.findAll());
     }
 
     @Override
