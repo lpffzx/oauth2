@@ -53,8 +53,10 @@ public class AuthorizeController {
             //构建OAuth 授权请求
             OAuthAuthzRequest oauthRequest = new OAuthAuthzRequest(request);
 
+            String clientId = oauthRequest.getClientId();
+
             //检查传入的客户端id是否正确
-            if (!oAuthService.checkClientId(oauthRequest.getClientId())) {
+            if (!oAuthService.checkClientId(clientId)) {
                 OAuthResponse response =
                         OAuthASResponse.errorResponse(HttpServletResponse.SC_BAD_REQUEST)
                                 .setError(OAuthError.TokenResponse.INVALID_CLIENT)
@@ -81,7 +83,7 @@ public class AuthorizeController {
             if (responseType.equals(ResponseType.CODE.toString())) {
                 OAuthIssuerImpl oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
                 authorizationCode = oauthIssuerImpl.authorizationCode();
-//                oAuthService.addAuthCode(authorizationCode, "");
+                oAuthService.addAuthCode(authorizationCode, clientId);
             }
 
             //进行OAuth响应构建
