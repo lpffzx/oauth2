@@ -13,14 +13,11 @@
     <context:property-placeholder location="classpath:*.properties"/>
 
     <!-- 扫描注解Bean -->
-    <context:component-scan base-package="com.kevin.oauth">
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-    </context:component-scan>
+    <context:component-scan base-package="com.kevin.oauth"/>
 
     <!-- 开启AOP监听 只对当前配置文件有效 -->
     <aop:aspectj-autoproxy expose-proxy="true"/>
 
     <import resource="spring-datasource.xml"/>
     <import resource="spring-config-cache.xml"/>
-    <import resource="spring-config-shiro.xml"/>
 </beans>

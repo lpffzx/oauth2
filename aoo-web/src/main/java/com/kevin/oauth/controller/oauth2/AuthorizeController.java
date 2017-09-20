@@ -63,17 +63,17 @@ public class AuthorizeController {
                 return new ResponseEntity(response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
             }
 
-
-            Subject subject = SecurityUtils.getSubject();
-            //如果用户没有登录，跳转到登陆页面
-            if (!subject.isAuthenticated()) {
-                if (!login(subject, request)) {//登录失败时跳转到登陆页面
-                    model.addAttribute("client", clientService.findByClientId(oauthRequest.getClientId()));
-                    return "oauth2login";
-                }
-            }
-
-            String username = (String) subject.getPrincipal();
+//
+//            Subject subject = SecurityUtils.getSubject();
+//            //如果用户没有登录，跳转到登陆页面
+//            if (!subject.isAuthenticated()) {
+//                if (!login(subject, request)) {//登录失败时跳转到登陆页面
+//                    model.addAttribute("client", clientService.findByClientId(oauthRequest.getClientId()));
+//                    return "oauth2login";
+//                }
+//            }
+//
+//            String username = (String) subject.getPrincipal();
             //生成授权码
             String authorizationCode = null;
             //responseType目前仅支持CODE，另外还有TOKEN
@@ -81,7 +81,7 @@ public class AuthorizeController {
             if (responseType.equals(ResponseType.CODE.toString())) {
                 OAuthIssuerImpl oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
                 authorizationCode = oauthIssuerImpl.authorizationCode();
-                oAuthService.addAuthCode(authorizationCode, username);
+//                oAuthService.addAuthCode(authorizationCode, "");
             }
 
             //进行OAuth响应构建
@@ -118,25 +118,25 @@ public class AuthorizeController {
         }
     }
 
-    private boolean login(Subject subject, HttpServletRequest request) {
-        if ("get".equalsIgnoreCase(request.getMethod())) {
-            return false;
-        }
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-
-        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
-            return false;
-        }
-
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-
-        try {
-            subject.login(token);
-            return true;
-        } catch (Exception e) {
-            request.setAttribute("error", "登录失败:" + e.getClass().getName());
-            return false;
-        }
-    }
+//    private boolean login(Subject subject, HttpServletRequest request) {
+//        if ("get".equalsIgnoreCase(request.getMethod())) {
+//            return false;
+//        }
+//        String username = request.getParameter("username");
+//        String password = request.getParameter("password");
+//
+//        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
+//            return false;
+//        }
+//
+//        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+//
+//        try {
+//            subject.login(token);
+//            return true;
+//        } catch (Exception e) {
+//            request.setAttribute("error", "登录失败:" + e.getClass().getName());
+//            return false;
+//        }
+//    }
 }
