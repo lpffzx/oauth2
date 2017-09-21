@@ -14,9 +14,6 @@ import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.OAuthResponse;
 import org.apache.oltu.oauth2.common.message.types.ResponseType;
 import org.apache.oltu.oauth2.common.utils.OAuthUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,7 +21,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,17 +61,11 @@ public class AuthorizeController {
                 return new ResponseEntity(response.getBody(), HttpStatus.valueOf(response.getResponseStatus()));
             }
 
-//
-//            Subject subject = SecurityUtils.getSubject();
-//            //如果用户没有登录，跳转到登陆页面
-//            if (!subject.isAuthenticated()) {
-//                if (!login(subject, request)) {//登录失败时跳转到登陆页面
-//                    model.addAttribute("client", clientService.findByClientId(oauthRequest.getClientId()));
-//                    return "oauth2login";
-//                }
-//            }
-//
-//            String username = (String) subject.getPrincipal();
+            /**
+             * 此处验证用户是否登录
+             * 如未登录则调用登录功能
+             */
+
             //生成授权码
             String authorizationCode = null;
             //responseType目前仅支持CODE，另外还有TOKEN
@@ -119,26 +109,4 @@ public class AuthorizeController {
             return new ResponseEntity(headers, HttpStatus.valueOf(response.getResponseStatus()));
         }
     }
-
-//    private boolean login(Subject subject, HttpServletRequest request) {
-//        if ("get".equalsIgnoreCase(request.getMethod())) {
-//            return false;
-//        }
-//        String username = request.getParameter("username");
-//        String password = request.getParameter("password");
-//
-//        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
-//            return false;
-//        }
-//
-//        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-//
-//        try {
-//            subject.login(token);
-//            return true;
-//        } catch (Exception e) {
-//            request.setAttribute("error", "登录失败:" + e.getClass().getName());
-//            return false;
-//        }
-//    }
 }
